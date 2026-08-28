@@ -1,0 +1,44 @@
+<!--
+  Trechos ilustrativos para integrar ao pom.xml.
+  Declare versões atuais e compatíveis nas propriedades ou em pluginManagement.
+-->
+<build>
+  <plugins>
+    <plugin>
+      <groupId>com.diffplug.spotless</groupId>
+      <artifactId>spotless-maven-plugin</artifactId>
+      <version>${spotless.version}</version>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-checkstyle-plugin</artifactId>
+      <version>${checkstyle-plugin.version}</version>
+      <configuration>
+        <configLocation>config/checkstyle/checkstyle.xml</configLocation>
+      </configuration>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-pmd-plugin</artifactId>
+      <version>${pmd-plugin.version}</version>
+      <configuration>
+        <rulesets>
+          <ruleset>config/pmd/ruleset.xml</ruleset>
+        </rulesets>
+      </configuration>
+    </plugin>
+    <plugin>
+      <groupId>com.github.spotbugs</groupId>
+      <artifactId>spotbugs-maven-plugin</artifactId>
+      <version>${spotbugs-plugin.version}</version>
+      <configuration>
+        <excludeFilterFile>config/spotbugs/exclude.xml</excludeFilterFile>
+      </configuration>
+    </plugin>
+    <plugin>
+      <groupId>org.jacoco</groupId>
+      <artifactId>jacoco-maven-plugin</artifactId>
+      <version>${jacoco.version}</version>
+    </plugin>
+  </plugins>
+</build>

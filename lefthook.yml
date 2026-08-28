@@ -1,0 +1,4 @@
+pre-push:
+  commands:
+    guardboarding:
+      run: ./quality-check.sh
