@@ -132,12 +132,6 @@ Recommended documentation includes:
 - OpenAPI/Swagger for public API contracts;
 - comments only when they explain context that code cannot communicate.
 
-## Docker is optional
-
-A container can standardize Java, Maven, and auxiliary tools. Use it when
-reproducibility justifies the added operational layer. GuardBoarding does not
-depend on Docker and should remain simple to run locally.
-
 ## Contributing
 
 Read `docs/CONTRIBUTING.md`. Suggestions should explain the problem, context,
