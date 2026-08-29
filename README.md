@@ -33,6 +33,7 @@ repository are examples. Keep only what represents actual project decisions.
 ├── examples/
 │   ├── ArchitectureTest.java
 │   └── pom-plugins.xml
+├── tests/test-quality-check.sh
 ├── README.pt-BR.md
 ├── lefthook.yml
 └── quality-check.sh
@@ -106,11 +107,36 @@ file, line, rule, priority, and message whenever those fields are available.
 
 Each tool remains available for individual execution.
 
+## Warnings, failures, and false positives
+
+A failed check means that a configured tool found a condition that deserves
+attention; it does not prove that the code contains a defect. PMD and SpotBugs
+use rules, static models, bytecode patterns, and heuristics that cannot know all
+runtime and business context, so they can report false positives.
+
+GuardBoarding therefore treats findings as review hypotheses. It identifies the
+source tool, normalizes file, line, rule, priority, and message when available,
+adds deterministic guidance for known rule families, and falls back to neutral
+guidance for unknown rules. The original log and XML remain the source of truth.
+Fix a finding only after confirming it. If it is a justified false positive,
+suppress or exclude it at the smallest possible scope and record the rationale.
+
+Spotless is different: a formatting failure normally means that the file does
+not match the configured formatter, not that the code is defective. If the
+result is undesirable, review the team's formatting configuration before
+changing code merely to satisfy it.
+
 ## Script customization
 
 Edit the `run_check` calls near the end of `quality-check.sh`. Remove plugins
 the project does not use, replace commands, and adapt explanations to actual
 rules. When an explanation is not mapped, keep and inspect the original output.
+
+Run the parser and guidance regression tests with:
+
+```bash
+./tests/test-quality-check.sh
+```
 
 ## Documentation
 

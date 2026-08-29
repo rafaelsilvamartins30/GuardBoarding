@@ -35,6 +35,7 @@ representa decisões reais do seu contexto.
 ├── examples/
 │   ├── ArchitectureTest.java
 │   └── pom-plugins.xml
+├── tests/test-quality-check.sh
 ├── lefthook.yml
 ├── README.pt-BR.md
 └── quality-check.sh
@@ -101,11 +102,38 @@ estão disponíveis.
 
 Cada ferramenta também pode continuar sendo executada individualmente.
 
+## Alertas, falhas e falsos positivos
+
+Uma verificação reprovada significa que uma ferramenta configurada encontrou
+uma condição que merece atenção; isso não prova que o código contém um defeito.
+PMD e SpotBugs usam regras, modelos estáticos, padrões de bytecode e heurísticas
+que não conhecem todo o contexto de execução e de negócio, portanto podem
+produzir falsos positivos.
+
+Por isso, o GuardBoarding trata os achados como hipóteses para revisão. Ele
+identifica a ferramenta de origem, normaliza arquivo, linha, regra, prioridade e
+mensagem quando disponíveis, acrescenta orientação determinística para famílias
+de regras conhecidas e usa orientação neutra para regras desconhecidas. Log e
+XML originais continuam sendo a fonte de verdade. Corrija um achado somente
+depois de confirmá-lo. Se for um falso positivo justificado, suprima ou exclua
+no menor escopo possível e registre a justificativa.
+
+O Spotless é diferente: uma falha de formatação normalmente significa que o
+arquivo não corresponde ao formatador configurado, não que o código possua um
+defeito. Se o resultado não for desejável, revise a configuração de formatação
+da equipe antes de alterar o código apenas para satisfazê-la.
+
 ## Personalização do script
 
 Edite as chamadas `run_check` no final de `quality-check.sh`. Remova plugins que
 o projeto não usa, troque comandos e adapte `explanation_for` às regras reais.
 Quando uma explicação não estiver mapeada, preserve e consulte a saída original.
+
+Execute os testes de regressão do parser e das orientações com:
+
+```bash
+./tests/test-quality-check.sh
+```
 
 ## Documentação
 

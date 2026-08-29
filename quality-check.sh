@@ -53,6 +53,8 @@ msg() {
       original) echo 'Resultado original' ;;
       excerpt) echo 'Trecho relevante da saída' ;;
       findings) echo 'Achados do relatório da ferramenta' ;;
+      guidance) echo 'Orientação para revisão' ;;
+      false_positive) echo 'Alerta não é diagnóstico: confirme o contexto antes de corrigir ou suprimir.' ;;
       not_run) echo 'Não executado' ;;
       missing) echo 'Ausente ou vazio' ;;
       missing_dir) echo 'Diretório ausente' ;;
@@ -78,6 +80,8 @@ msg() {
       original) echo 'Original output' ;;
       excerpt) echo 'Relevant output excerpt' ;;
       findings) echo 'Findings from the tool report' ;;
+      guidance) echo 'Review guidance' ;;
+      false_positive) echo 'A warning is not a diagnosis: confirm the context before fixing or suppressing it.' ;;
       not_run) echo 'Not run' ;;
       missing) echo 'Missing or empty' ;;
       missing_dir) echo 'Missing directory' ;;
@@ -125,6 +129,32 @@ explanation_for() {
       security) echo 'Helps prevent possible secrets from remaining in Git history.' ;;
       documentation) echo 'Keeps setup, contribution, architecture, and decisions accessible.' ;;
       *) echo 'Read the original output to interpret this check.' ;;
+    esac
+  fi
+}
+
+guidance_for() {
+  local tool="$1"
+  local rule="$2"
+  if [[ "$LANGUAGE" == 'pt' ]]; then
+    case "$tool:$rule" in
+      pmd:CognitiveComplexity|pmd:CyclomaticComplexity) echo 'Confira se o fluxo pode ser dividido em passos menores sem esconder a regra de negócio.' ;;
+      pmd:GodClass) echo 'Confira se a classe concentra responsabilidades que mudam por motivos diferentes.' ;;
+      spotbugs:NP_*) echo 'Confira caminhos nulos, contratos de retorno e validações existentes.' ;;
+      spotbugs:EI_*|spotbugs:MS_*) echo 'Confira se estado mutável é exposto e se uma cópia defensiva é necessária.' ;;
+      spotbugs:*) echo 'Trate o padrão de bytecode como hipótese e confirme fluxo, contratos e testes.' ;;
+      pmd:*) echo 'Leia a regra no contexto do projeto e confirme se o padrão representa um problema real.' ;;
+      *) echo 'Consulte a regra e a evidência original antes de decidir qualquer alteração.' ;;
+    esac
+  else
+    case "$tool:$rule" in
+      pmd:CognitiveComplexity|pmd:CyclomaticComplexity) echo 'Check whether the flow can be split into smaller steps without hiding the business rule.' ;;
+      pmd:GodClass) echo 'Check whether the class concentrates responsibilities that change for different reasons.' ;;
+      spotbugs:NP_*) echo 'Check null paths, return contracts, and existing validation.' ;;
+      spotbugs:EI_*|spotbugs:MS_*) echo 'Check whether mutable state is exposed and whether a defensive copy is needed.' ;;
+      spotbugs:*) echo 'Treat the bytecode pattern as a hypothesis and confirm flow, contracts, and tests.' ;;
+      pmd:*) echo 'Read the rule in project context and confirm whether the pattern is a real problem.' ;;
+      *) echo 'Read the rule and original evidence before deciding on any change.' ;;
     esac
   fi
 }
@@ -195,7 +225,7 @@ parse_pmd_xml() {
     }
     /<\/violation>/ {
       if (inside && shown < 20) {
-        printf "%s:%s | %s | P%s | %s\n", file, line, rule, priority, clean(message)
+        printf "%s\t%s\t%s\t%s\t%s\n", file, line, rule, "P" priority, clean(message)
         shown++
       }
       inside = 0; next
@@ -241,7 +271,7 @@ parse_spotbugs_xml() {
         if (file == "") file = "unknown"
         if (line == "") line = "?"
         if (message == "") message = type
-        printf "%s:%s | %s | priority %s | %s\n", file, line, type, priority, clean(message)
+        printf "%s\t%s\t%s\t%s\t%s\n", file, line, type, "P" priority, clean(message)
         shown++
       }
       inside = 0
@@ -260,7 +290,12 @@ append_machine_findings() {
     spotbugs) findings="$(parse_spotbugs_xml "$xml_file")" ;;
   esac
   [[ -n "$findings" ]] || return
-  printf '**%s**\n\n```text\n%s\n```\n\n' "$(msg findings)" "$findings" >> "$REPORT"
+  printf '**%s**\n\n' "$(msg findings)" >> "$REPORT"
+  while IFS=$'\t' read -r file line rule priority message; do
+    printf -- '- `%s:%s` | `%s:%s` | %s | %s\n' "$file" "$line" "$id" "$rule" "$priority" "$message" >> "$REPORT"
+    printf '  - **%s:** %s\n' "$(msg guidance)" "$(guidance_for "$id" "$rule")" >> "$REPORT"
+  done <<< "$findings"
+  printf '\n> %s\n\n' "$(msg false_positive)" >> "$REPORT"
 }
 
 run_check() {
@@ -351,4 +386,6 @@ main() {
   (( FAILED == 0 ))
 }
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  main "$@"
+fi
