@@ -33,13 +33,29 @@ representa decisões reais do seu contexto.
 │   ├── adr/README.md
 │   └── pt-BR/                 # documentação equivalente em português
 ├── examples/
+│   ├── demo-app/              # aplicação de referência completa e configurada em Spring Boot 3
 │   ├── ArchitectureTest.java
 │   └── pom-plugins.xml
-├── tests/test-quality-check.sh
-├── lefthook.yml
+├── tests/
+│   └── test-quality-check.sh
 ├── README.pt-BR.md
+├── lefthook.yml
 └── quality-check.sh
 ```
+
+## Aplicação de Demonstração (Demo App)
+
+Uma implementação de referência completa e funcional está disponível em [`examples/demo-app/`](examples/demo-app/README.pt-BR.md). Ela demonstra o ecossistema completo (Java 17, Spring Boot 3, Spotless, Checkstyle, PMD, SpotBugs, ArchUnit, JaCoCo e verificação de arquivos sensíveis) com 100% de aprovação e inclui laboratório de testes para violações de regras.
+
+## Inicialização rápida (Experimental / WIP)
+
+Você pode inicializar as configurações do GuardBoarding em outro projeto utilizando o assistente de setup:
+
+```bash
+./quality-check.sh --init /caminho/do/projeto
+```
+
+> **Aviso:** O assistente `--init` está atualmente em desenvolvimento ativo (WIP). Ele cria diretórios, copia de forma não destrutiva as configurações e documentações base e atualiza o `.gitignore`. Sempre revise os arquivos copiados de acordo com o contexto da equipe.
 
 ## Instalação gradual
 
@@ -82,6 +98,21 @@ Os limites e nomes devem representar convenções discutidas pela equipe.
 ./quality-check.sh
 ./quality-check.sh --lang pt
 ```
+
+#### Opções adicionais de execução
+
+- **Formatação automática:** Aplique formatação de código antes da verificação:
+  ```bash
+  ./quality-check.sh --fix
+  ```
+- **Execução seletiva:** Execute apenas verificações específicas para feedback mais rápido:
+  ```bash
+  ./quality-check.sh --only formatting,conventions,security
+  ```
+- **Desativar cores no terminal:**
+  ```bash
+  ./quality-check.sh --no-color
+  ```
 
 O script remove somente `.quality/last-run`, executa as ferramentas configuradas
 e gera:

@@ -31,13 +31,29 @@ repository are examples. Keep only what represents actual project decisions.
 │   ├── adr/README.md
 │   └── pt-BR/                 # equivalent Portuguese documentation
 ├── examples/
+│   ├── demo-app/              # complete, fully configured Spring Boot 3 reference app
 │   ├── ArchitectureTest.java
 │   └── pom-plugins.xml
-├── tests/test-quality-check.sh
+├── tests/
+│   └── test-quality-check.sh
 ├── README.pt-BR.md
 ├── lefthook.yml
 └── quality-check.sh
 ```
+
+## Reference Demo App
+
+A complete, working reference implementation is available in [`examples/demo-app/`](examples/demo-app/README.md). It demonstrates the full stack (Java 17, Spring Boot 3, Spotless, Checkstyle, PMD, SpotBugs, ArchUnit, JaCoCo, and sensitive file checks) passing with 100% success, alongside hands-on experiments for testing rule violations.
+
+## Quick initialization (Experimental / WIP)
+
+You can initialize GuardBoarding configurations in another project with the setup wizard:
+
+```bash
+./quality-check.sh --init /path/to/project
+```
+
+> **Note:** The `--init` wizard is currently under active development (WIP). It creates directories, non-destructively copies baseline configs and docs, and updates `.gitignore`. Always verify copied configurations against your team's needs.
 
 ## Gradual installation
 
@@ -88,6 +104,21 @@ Portuguese output is also available:
 ```bash
 ./quality-check.sh --lang pt
 ```
+
+#### Additional execution options
+
+- **Auto-formatting:** Automatically apply standard code style before checking:
+  ```bash
+  ./quality-check.sh --fix
+  ```
+- **Selective execution:** Run only specific checks for faster feedback:
+  ```bash
+  ./quality-check.sh --only formatting,conventions,security
+  ```
+- **Disable terminal colors:**
+  ```bash
+  ./quality-check.sh --no-color
+  ```
 
 The script deletes only `.quality/last-run`, runs the configured tools, and
 generates:

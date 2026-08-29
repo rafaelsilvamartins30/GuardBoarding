@@ -63,4 +63,24 @@ LANGUAGE='pt'
 assert_contains "$(guidance_for pmd GodClass)" 'responsabilidades'
 assert_contains "$(guidance_for pmd UnknownRule)" 'contexto do projeto'
 
+# Test ONLY_CHECKS filtering
+ONLY_CHECKS='formatting,security'
+assert_contains "$(is_check_enabled formatting && echo 'yes' || echo 'no')" 'yes'
+assert_contains "$(is_check_enabled security && echo 'yes' || echo 'no')" 'yes'
+assert_contains "$(is_check_enabled pmd && echo 'yes' || echo 'no')" 'no'
+ONLY_CHECKS=''
+assert_contains "$(is_check_enabled pmd && echo 'yes' || echo 'no')" 'yes'
+
+# Test init setup in temporary folder
+INIT_DIR="$TEMP_ROOT/init_test"
+INIT_TARGET="$INIT_DIR"
+init_output="$(do_init_setup)"
+assert_contains "$init_output" 'GuardBoarding Setup'
+assert_contains "$init_output" 'WIP'
+[[ -f "$INIT_DIR/config/checkstyle/checkstyle.xml" ]] || { echo "Init failed to create checkstyle.xml" >&2; exit 1; }
+[[ -f "$INIT_DIR/config/pmd/ruleset.xml" ]] || { echo "Init failed to create ruleset.xml" >&2; exit 1; }
+[[ -f "$INIT_DIR/docs/ARCHITECTURE.md" ]] || { echo "Init failed to create ARCHITECTURE.md" >&2; exit 1; }
+[[ -f "$INIT_DIR/quality-check.sh" ]] || { echo "Init failed to create quality-check.sh" >&2; exit 1; }
+
 printf 'quality-check tests passed\n'
+
