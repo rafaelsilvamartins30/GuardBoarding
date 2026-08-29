@@ -127,11 +127,6 @@ Recomenda-se manter:
 - OpenAPI/Swagger para contratos públicos da API;
 - comentários apenas quando explicam contexto que o código não comunica.
 
-## Docker é opcional
-
-Um container pode padronizar Java, Maven e ferramentas auxiliares. Use-o quando
-a reprodutibilidade compensar a camada operacional adicional. GuardBoarding não
-depende de Docker e deve continuar simples de executar localmente.
 
 ## Contribuição
 
