@@ -1,23 +1,23 @@
 # GuardBoarding
 
-GuardBoarding é um exemplo aberto e adaptável para aproximar onboarding e
-qualidade de software. O projeto reúne ferramentas gratuitas, documentação e um
-script local para transformar padrões escolhidos por uma equipe em feedback
-mais fácil de executar e compreender.
+[Português (Brasil)](README.pt-BR.md)
 
-Este repositório é o artefato técnico de um Trabalho de Conclusão de Curso em
-Engenharia de Software. O estudo de caso usa Java, Spring Boot, Maven, Git e
-Shell, mas o princípio pode ser aplicado a outras arquiteturas e linguagens com
-ferramentas equivalentes.
+GuardBoarding is an open and adaptable example that connects onboarding and
+software quality. It combines free tools, documentation, and a local script to
+turn standards chosen by a team into feedback that is easier to run and read.
 
-## O que este projeto não decide
+This repository is the technical artifact of an undergraduate Software
+Engineering thesis. The case study uses Java, Spring Boot, Maven, Git, and
+Shell, but the principle can be applied to other architectures and languages
+with equivalent tools.
 
-GuardBoarding não define uma arquitetura correta, não cria regras universais e
-não substitui code review, testes bem projetados ou orientação humana. Os
-arquivos deste repositório são exemplos. A equipe deve manter apenas aquilo que
-representa decisões reais do seu contexto.
+## What this project does not decide
 
-## Conteúdo
+GuardBoarding does not define the correct architecture, create universal rules,
+or replace code review, well-designed tests, and human guidance. Files in this
+repository are examples. Keep only what represents actual project decisions.
+
+## Repository contents
 
 ```text
 .
@@ -28,100 +28,121 @@ representa decisões reais do seu contexto.
 ├── docs/
 │   ├── ARCHITECTURE.md
 │   ├── CONTRIBUTING.md
-│   └── adr/README.md
+│   ├── adr/README.md
+│   └── pt-BR/                 # equivalent Portuguese documentation
 ├── examples/
 │   ├── ArchitectureTest.java
 │   └── pom-plugins.xml
+├── README.pt-BR.md
 ├── lefthook.yml
 └── quality-check.sh
 ```
 
-## Instalação gradual
+## Gradual installation
 
-### 1. Copie o script e a documentação
+### 1. Copy the script and documentation
 
 ```bash
-cp quality-check.sh /caminho/do/projeto/
-cp -R docs /caminho/do/projeto/
-chmod +x /caminho/do/projeto/quality-check.sh
+cp quality-check.sh /path/to/project/
+cp -R docs /path/to/project/
+chmod +x /path/to/project/quality-check.sh
 ```
 
-Revise `docs/ARCHITECTURE.md` e `docs/CONTRIBUTING.md`. Documente o projeto real
-antes de automatizar regras.
+Review `docs/ARCHITECTURE.md` and `docs/CONTRIBUTING.md`. Document the real
+project before automating its rules.
 
-### 2. Escolha uma verificação pequena
+### 2. Choose one small check
 
-Comece, por exemplo, com formatação. Consulte `examples/pom-plugins.xml`, fixe
-uma versão atual e compatível do plugin no seu `pom.xml` e confirme o comando:
+Start with formatting, for example. Read `examples/pom-plugins.xml`, select a
+current compatible plugin version in your `pom.xml`, and verify the command:
 
 ```bash
 ./mvnw spotless:check
 ```
 
-Depois adicione convenções, análise estática, arquitetura, testes, cobertura e
-segurança conforme a necessidade. Não é obrigatório adotar tudo.
+Add conventions, static analysis, architecture, tests, coverage, and security
+as needed. Adopting every check is not required.
 
-### 3. Adapte as configurações
+### 3. Adapt the configurations
 
-- `config/checkstyle/checkstyle.xml`: exemplos básicos de nomenclatura;
-- `config/pmd/ruleset.xml`: regras ilustrativas de design;
-- `config/spotbugs/exclude.xml`: local para exceções justificadas;
-- `examples/ArchitectureTest.java`: dependências em camadas com ArchUnit;
-- `lefthook.yml`: execução opcional antes de enviar commits.
+- `config/checkstyle/checkstyle.xml`: basic naming examples;
+- `config/pmd/ruleset.xml`: illustrative design rules;
+- `config/spotbugs/exclude.xml`: justified exception location;
+- `examples/ArchitectureTest.java`: ArchUnit layer dependencies;
+- `lefthook.yml`: optional pre-push execution.
 
-Os limites e nomes devem representar convenções discutidas pela equipe.
+Thresholds and names should represent conventions discussed by the team.
 
-### 4. Execute o conjunto
+### 4. Run the checks
+
+English output is the default:
 
 ```bash
 ./quality-check.sh
+./quality-check.sh --lang en
 ```
 
-O script remove somente `.quality/last-run`, executa as ferramentas configuradas
-e gera:
+Portuguese output is also available:
+
+```bash
+./quality-check.sh --lang pt
+```
+
+The script deletes only `.quality/last-run`, runs the configured tools, and
+generates:
 
 ```text
 .quality/last-run/
-├── raw/          # saída completa de cada comando
-├── summary.txt   # visão curta de aprovação e falha
-└── report.md     # explicações determinísticas
+├── raw/          # complete output from every command
+├── summary.txt   # short pass/fail view
+└── report.md     # deterministic explanations
 ```
 
-Cada ferramenta também pode continuar sendo executada individualmente.
+The summary, headings, and GuardBoarding explanations follow `--lang`. Output
+produced by Maven and third-party plugins is preserved verbatim so diagnostic
+details are never altered by translation. PMD and SpotBugs XML reports are also
+copied into `raw/`, and their main findings are normalized in `report.md` with
+file, line, rule, priority, and message whenever those fields are available.
 
-## Personalização do script
+Each tool remains available for individual execution.
 
-Edite as chamadas `run_check` no final de `quality-check.sh`. Remova plugins que
-o projeto não usa, troque comandos e adapte `explanation_for` às regras reais.
-Quando uma explicação não estiver mapeada, preserve e consulte a saída original.
+## Script customization
 
-## Documentação
+Edit the `run_check` calls near the end of `quality-check.sh`. Remove plugins
+the project does not use, replace commands, and adapt explanations to actual
+rules. When an explanation is not mapped, keep and inspect the original output.
 
-Markdown mantém conhecimento próximo do código, aparece claramente em diffs e
-pode fornecer contexto estruturado para ferramentas assistidas por LLMs. Isso
-não transfere a responsabilidade da equipe: texto gerado ou alterado com IA deve
-ser revisado, e decisões importantes precisam de autoria e justificativa humana.
+## Documentation
 
-Recomenda-se manter:
+English is the canonical documentation language in the root files. Equivalent
+Portuguese files live under `docs/pt-BR/` and in `README.pt-BR.md`. When changing
+documentation, update both versions in the same contribution.
 
-- README com instalação e comandos cotidianos;
-- guia de contribuição;
-- visão atual da arquitetura;
-- ADRs para decisões determinantes;
-- OpenAPI/Swagger para contratos públicos da API;
-- comentários apenas quando explicam contexto que o código não comunica.
+Markdown keeps knowledge close to code, is clear in diffs, and can provide
+structured context to LLM-assisted tools. Responsibility remains with the team:
+AI-generated or AI-edited text must be reviewed, and important decisions need
+human authorship and rationale.
 
-## Docker é opcional
+Recommended documentation includes:
 
-Um container pode padronizar Java, Maven e ferramentas auxiliares. Use-o quando
-a reprodutibilidade compensar a camada operacional adicional. GuardBoarding não
-depende de Docker e deve continuar simples de executar localmente.
+- a README with setup and daily commands;
+- a contribution guide and Git flow conventions;
+- a current architecture overview;
+- ADRs for significant decisions;
+- OpenAPI/Swagger for public API contracts;
+- comments only when they explain context that code cannot communicate.
 
-## Contribuição
+## Docker is optional
 
-Leia `docs/CONTRIBUTING.md`. Sugestões devem explicar o problema, o contexto e
-por que a mudança ajuda pessoas ou preserva uma decisão de projeto.
+A container can standardize Java, Maven, and auxiliary tools. Use it when
+reproducibility justifies the added operational layer. GuardBoarding does not
+depend on Docker and should remain simple to run locally.
 
-## Licença
+## Contributing
 
-Distribuído sob a licença MIT. Consulte `LICENSE`.
+Read `docs/CONTRIBUTING.md`. Suggestions should explain the problem, context,
+and why a change supports people or preserves a project decision.
+
+## License
+
+Distributed under the MIT License. See `LICENSE`.

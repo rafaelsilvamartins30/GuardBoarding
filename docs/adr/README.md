@@ -1,25 +1,27 @@
 # Architecture Decision Records
 
-Use um arquivo por decisão determinante:
+[Português (Brasil)](../pt-BR/adr/README.md)
+
+Use one file per significant decision:
 
 ```text
-ADR-001-titulo-curto.md
+ADR-001-short-title.md
 ```
 
-Estrutura sugerida:
+Suggested structure:
 
 ```markdown
-# ADR-001 — Título
+# ADR-001 — Title
 
 ## Status
-Proposta | Aceita | Substituída
+Proposed | Accepted | Superseded
 
-## Contexto
-Qual problema e quais restrições motivaram a decisão?
+## Context
+Which problem and constraints motivated the decision?
 
-## Decisão
-O que foi escolhido?
+## Decision
+What was selected?
 
-## Consequências
-Quais benefícios, custos e limitações passam a existir?
+## Consequences
+Which benefits, costs, and limitations now exist?
 ```

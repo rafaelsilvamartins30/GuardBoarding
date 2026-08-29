@@ -1,26 +1,41 @@
-# Como contribuir
+# Contributing
 
-## Preparação
+[Português (Brasil)](pt-BR/CONTRIBUTING.md)
 
-1. Leia `README.md` e `docs/ARCHITECTURE.md`.
-2. Instale as versões de Java e Maven definidas pelo projeto.
-3. Execute os testes antes de alterar o código.
+## Preparation
 
-## Durante a mudança
+1. Read `README.md` and `docs/ARCHITECTURE.md`.
+2. Install the Java and Maven versions defined by the project.
+3. Run tests before changing code.
 
-- siga as convenções versionadas no repositório;
-- escreva testes para o comportamento alterado;
-- atualize contratos e documentação afetados;
-- crie ou atualize um ADR quando a decisão for arquitetural.
+## Git conventions
 
-## Antes de compartilhar
+The project should document its chosen Git flow. A simple example is:
+
+1. create `feature/short-description` from the integration branch;
+2. keep commits focused and descriptive;
+3. open a pull request to `develop`;
+4. require review and automated checks;
+5. merge `develop` into protected `main` only for publication or release.
+
+Adapt branch names and flow to the team. Protect shared branches to prevent
+direct pushes and require the checks that the project considers mandatory.
+
+## During a change
+
+- follow conventions versioned in the repository;
+- write tests for changed behavior;
+- update affected contracts and documentation;
+- create or update an ADR for architectural decisions.
+
+## Before sharing
 
 ```bash
 ./quality-check.sh
 ```
 
-Leia primeiro `.quality/last-run/report.md`. Use os arquivos em `raw/` para o
-diagnóstico completo.
+Read `.quality/last-run/report.md` first. Use files in `raw/` for complete
+diagnostics.
 
-Uma contribuição pode propor a revisão de uma regra. Explique contexto e
-trade-offs em vez de apenas desabilitar a verificação.
+A contribution may propose revising a rule. Explain context and trade-offs
+instead of only disabling the check.

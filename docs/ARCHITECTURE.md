@@ -1,27 +1,27 @@
-# Arquitetura
+# Architecture
 
-Este arquivo deve apresentar a arquitetura atual, não uma intenção abandonada.
+[Português (Brasil)](pt-BR/ARCHITECTURE.md)
 
-## Contexto
+This file should present the current architecture, not an abandoned intention.
 
-Descreva o problema atendido, os usuários e as principais restrições.
+## Context
 
-## Componentes e responsabilidades
+Describe the problem, users, and main constraints.
 
-Liste módulos ou camadas, explicando o que pertence e o que não pertence a cada
-uma.
+## Components and responsibilities
 
-## Dependências permitidas
+List modules or layers, explaining what belongs and does not belong to each one.
 
-Exemplo para uma arquitetura em camadas:
+## Allowed dependencies
+
+Example for a layered architecture:
 
 ```text
 Controller → Service → Repository
 ```
 
-Explique exceções e registre mudanças determinantes em ADRs.
+Explain exceptions and record significant changes in ADRs.
 
-## Fluxos importantes
+## Important flows
 
-Documente somente fluxos cuja compreensão não seja evidente pela estrutura do
-código.
+Document only flows whose rationale is not clear from the code structure.

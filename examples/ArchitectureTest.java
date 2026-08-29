@@ -9,7 +9,7 @@ import com.tngtech.archunit.lang.ArchRule;
 @AnalyzeClasses(packages = "com.example")
 class ArchitectureTest {
 
-  // Exemplo: troque pacotes e dependências conforme a arquitetura decidida.
+  // Example: replace packages and dependencies according to the chosen architecture.
   @ArchTest
   static final ArchRule layersMustRespectTheDefinedFlow =
       layeredArchitecture()

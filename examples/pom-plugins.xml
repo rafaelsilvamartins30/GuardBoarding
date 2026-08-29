@@ -1,6 +1,6 @@
 <!--
-  Trechos ilustrativos para integrar ao pom.xml.
-  Declare versões atuais e compatíveis nas propriedades ou em pluginManagement.
+  Illustrative snippets to integrate into pom.xml.
+  Declare current compatible versions in properties or pluginManagement.
 -->
 <build>
   <plugins>

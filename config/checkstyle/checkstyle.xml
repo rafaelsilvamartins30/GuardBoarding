@@ -5,7 +5,7 @@
 <module name="Checker">
   <property name="charset" value="UTF-8"/>
   <module name="TreeWalker">
-    <!-- Exemplos: ajuste os padrões à convenção decidida pela equipe. -->
+    <!-- Examples: adapt patterns to conventions chosen by the team. -->
     <module name="TypeName"/>
     <module name="MethodName"/>
     <module name="MemberName"/>
